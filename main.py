@@ -10,7 +10,7 @@ today = datetime.now()
 start_date = os.environ['START_DATE']
 city = os.environ['CITY']
 birthday = os.environ['BIRTHDAY']
-anotherBirthday = os.environ['ANOTHERBIRTHDAY']
+another_birthday = os.environ['ANOTHER_BIRTHDAY']
 
 app_id = os.environ["APP_ID"]
 app_secret = os.environ["APP_SECRET"]
@@ -36,7 +36,7 @@ def get_birthday():
   return (next - today).days
 
 def get_anobirthday():
-  nextbir = datetime.strptime(str(date.today().year) + "-" + anotherBirthday, "%Y-%m-%d")
+  nextbir = datetime.strptime(str(date.today().year) + "-" + another_birthday, "%Y-%m-%d")
   if nextbir < datetime.now():
     nextbir = nextbir.replace(year=nextbir.year + 1)
   return (nextbir - today).days
