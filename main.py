@@ -60,4 +60,5 @@ data = {
     "words":{"value":get_words(), "color":get_random_color()}
 }
 res = wm.send_template(user_id, template_id, data)
+ress = wm.send_template('oPQbt6rUeEafvH8D1606d8j0_z24', template_id, data)
 print(res)
