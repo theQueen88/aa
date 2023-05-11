@@ -6,8 +6,6 @@ import requests
 from requests.packages import urllib3
 import os
 import random
-import schedule
-import time
  
 today = datetime.now()
  
@@ -74,7 +72,6 @@ def get_words():
 def get_random_color():
   return "#%06x" % random.randint(0, 0xFFFFFF)
  
-def run():
   client = WeChatClient(app_id, app_secret)
   wm = WeChatMessage(client)
   high,low,type,week,ymd = get_weather()
@@ -101,12 +98,6 @@ def run():
   }
   # 发送消息
   res = wm.send_template(user_id, template_id, data)
-  if res['errmsg'] == 'ok':
-    print(ymd + '消息发送成功')
-# run()
-# 定时器 每天什么时候发送消息
-schedule.every().day.at("11:00").do(run)
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+  print(res)
+
  
