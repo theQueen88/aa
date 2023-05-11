@@ -9,14 +9,14 @@ import random
  
 today = datetime.now()
  
-start_date = "yyyy-mm-dd"  #你们恋爱开始的时间开始时间
+start_date = "2023-03-27"  #你们恋爱开始的时间开始时间
 city = "101190704"         #城市id 具体的可以在https://www.sojson.com/blog/305.html查询
-gyjbirthday = "mm-dd"  # 两个人的生日生日
-zcbirthday = "mm-dd"  #生日
-app_id = "" #微信测试的app_id
-app_secret = "" #微信测试的app_secret
-user_id = ""        #生成的user_id 让你的女朋友扫码 显示出来的id
-template_id = "" #模板id
+gyjbirthday = "08-20"  # 两个人的生日生日
+zcbirthday = "10-22"  #生日
+app_id = "wx85f226df68a65292" #微信测试的app_id
+app_secret = "6d07756f1a35cc0c0b0a18417a58b0aa" #微信测试的app_secret
+user_id = "oPQbt6nQb3L2qwE-_Q1bSvEcMyXs"        #生成的user_id 让你的女朋友扫码 显示出来的id
+template_id = "ucgRwwi2Jj7X4F7R7yZu8l_95bBhJBWN4jBa8-YMA9U" #模板id
  
 # 返回  当天最高最低气温 当天天气情况 
 def get_weather():
