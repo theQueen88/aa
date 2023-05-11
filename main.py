@@ -10,8 +10,8 @@ today = datetime.now()
  
 start_date = os.environ['START_DATE'] #你们恋爱开始的时间开始时间
 city = os.environ['CITY']
-gyjbirthday = os.environ['GYJBIRTHDAY']  # 两个人的生日生日
-zcbirthday = os.environ['ZCBIRTHDAY']  #生日
+gyjbirthday = os.environ['GYJ_BIRTHDAY']  # 两个人的生日生日
+zcbirthday = os.environ['ZC_BIRTHDAY']  #生日
 app_id = os.environ["APP_ID"] #微信测试的app_id
 app_secret = os.environ["APP_SECRET"] #微信测试的app_secret
 user_id = os.environ["USER_ID"]        #生成的user_id 让你的女朋友扫码 显示出来的id
