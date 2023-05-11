@@ -8,7 +8,6 @@ import random
 
 today = datetime.now()
 start_date = os.environ['START_DATE']
-city = os.environ['CITY']
 birthday = os.environ['BIRTHDAY']
 
 app_id = os.environ["APP_ID"]
@@ -17,12 +16,11 @@ app_secret = os.environ["APP_SECRET"]
 user_id = os.environ["USER_ID"]
 template_id = os.environ["TEMPLATE_ID"]
 
-
 def get_weather():
-  url = "http://autodev.openspeech.cn/csp/api/v2.1/weather?openId=aiuicus&clientType=android&sign=android&city=" + city
+  url = "http://t.weather.sojson.com/api/weather/city/101190704"
   res = requests.get(url).json()
-  weather = res['data']['list'][0]
-  return weather['weather'], math.floor(weather['temp']), math.floor(weather['low']), math.floor(weather['high']),  weather['airQuality']
+  weather = res['data']
+  return weather['forecast'][0]['high'],weather['forecast'][0]['low'],weather['forecast'][0]['type'],weather['forecast'][0]['week'],weather['forecast'][0]['ymd']
 
 def get_count():
   delta = today - datetime.strptime(start_date, "%Y-%m-%d")
@@ -47,10 +45,17 @@ def get_random_color():
 client = WeChatClient(app_id, app_secret)
 
 wm = WeChatMessage(client)
-wea, temperature, low, high, airQuality = get_weather()
-data = {"weather":{"value":wea, "color":get_random_color()},"temperature":{"value":temperature, "color":get_random_color()},
-        "low":{"value":low, "color":get_random_color()},"high":{"value":high, "color":get_random_color()},"airQuality":{"value":airQuality, "color":get_random_color()},
-        "love_days":{"value":get_count(), "color":get_random_color()},"birthday_left":{"value":get_birthday(), "color":get_random_color()},
-        "words":{"value":get_words(), "color":get_random_color()}}
+# wea, temperature, low, high, airQuality = get_weather()
+high,low,type,week,ymd = get_weather()
+data = {
+    "week": {"value": week, "color": get_random_color()},
+    "low":{"value":low, "color":get_random_color()},
+    "high":{"value":high, "color":get_random_color()},
+    "type":{"value":type, "color":get_random_color()},
+    "ymd": {"value": ymd, "color": get_random_color()},
+    "love_days":{"value":get_count(), "color":get_random_color()},
+    "birthday_left":{"value":get_birthday(), "color":get_random_color()},
+    "words":{"value":get_words(), "color":get_random_color()}
+}
 res = wm.send_template(user_id, template_id, data)
 print(res)
