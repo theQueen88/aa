@@ -11,7 +11,7 @@ birthday = "10-22"         # 出生日期
 app_id = "wx85f226df68a65292" # app_id
 app_secret = "6d07756f1a35cc0c0b0a18417a58b0aa"   # appsecret
 user_id = ["oPQbt6nQb3L2qwE-_Q1bSvEcMyXs"]        # user_id 关注的用户微信ID
-template_id = "NTn32uewJaOPSH58-v_vwt9HlpsRV-LflSjV_h6ZiSo"  # 生成的模板id， 新建的ID
+template_id = "PJQaBaYoUqy6SS4cIY-7vhzGiVuuXM9ogYnf9NITfVM"  # 生成的模板id， 新建的ID
  
 def get_weather():
   url = "http://t.weather.sojson.com/api/weather/city/" + city
