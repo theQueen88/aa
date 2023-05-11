@@ -1,64 +1,78 @@
 from datetime import date, datetime
-import math
 from wechatpy import WeChatClient
 from wechatpy.client.api import WeChatMessage, WeChatTemplate
 import requests
-import os
 import random
-
-today = datetime.now()
-start_date = os.environ['START_DATE']
-city = os.environ['CITY']
-birthday = os.environ['BIRTHDAY']
-
-app_id = os.environ["APP_ID"]
-app_secret = os.environ["APP_SECRET"]
-
-user_id = os.environ["USER_ID"]
-template_id = os.environ["TEMPLATE_ID"]
-
+ 
+today = datetime.now()     # 获取今日日期
+start_date = "2023-03-27"  # 恋爱开始时间
+city = "101110809"         # 城市天气查询的id ,根据自己城市查询城市ID
+birthday = "08-20"         # 出生日期
+app_id = "wx85f226df68a65292" # app_id
+app_s = "6d07756f1a35cc0c0b0a18417a58b0aa"   # appsecret
+user_id = ["oPQbt6nQb3L2qwE-_Q1bSvEcMyXs"]        # user_id 关注的用户微信ID
+template_id = "WQcScxPRg6CHbSBg79-vrburdLypTQiYrq-t8rY3HJo"  # 生成的模板id， 新建的ID
+ 
 def get_weather():
-  url = "http://t.weather.sojson.com/api/weather/city/101190704"
+  url = "http://t.weather.sojson.com/api/weather/city/" + city
   res = requests.get(url).json()
-  weather = res['data']
-  return weather['forecast'][0]['high'],weather['forecast'][0]['low'],weather['forecast'][0]['type'],weather['forecast'][0]['week'],weather['forecast'][0]['ymd'],weather['forecast'][0]['notice']
-
+  citys = res['cityInfo']
+  weather = res['data']['forecast']
+  return weather, citys
+ 
+ 
 def get_count():
   delta = today - datetime.strptime(start_date, "%Y-%m-%d")
   return delta.days
-
+ 
 def get_birthday():
   next = datetime.strptime(str(date.today().year) + "-" + birthday, "%Y-%m-%d")
   if next < datetime.now():
     next = next.replace(year=next.year + 1)
   return (next - today).days
-
+ 
 def get_words():
-    url = "https://api.shadiao.pro/chp"
-    res = requests.get(url).json()
-    words = res['data']
-    return words['text']
-
+  words = requests.get("https://api.shadiao.pro/chp")
+  if words.status_code != 200:
+    return get_words()
+  return words.json()['data']['text']
+ 
 def get_random_color():
   return "#%06x" % random.randint(0, 0xFFFFFF)
-
-
+ 
+ 
 client = WeChatClient(app_id, app_secret)
-
 wm = WeChatMessage(client)
-# wea, temperature, low, high, airQuality = get_weather()
-high,low,type,week,ymd,notice = get_weather()
-data = {
-    "week": {"value": week, "color": get_random_color()},
-    "low":{"value":low, "color":get_random_color()},
-    "high":{"value":high, "color":get_random_color()},
-    "type":{"value":type, "color":get_random_color()},
-    "ymd": {"value": ymd, "color": get_random_color()},
-    "notice": {"value": notice, "color": get_random_color()},
-    "love_days":{"value":get_count(), "color":get_random_color()},
-    "birthday_left":{"value":get_birthday(), "color":get_random_color()},
-    "words":{"value":"你要是愿意，我就永远存在。", "color":get_random_color()}
-}
-res = wm.send_template(user_id, template_id, data)
-# ress = wm.send_template('oPQbt6rUeEafvH8D1606d8j0_z24', template_id, data)
-print(res)
+ 
+weather_list, city_list = get_weather()
+# 划分天气信息
+print(weather_list)
+type = weather_list[0]['type']   # 天气类型
+tep_high = weather_list[0]['high'] # 高温
+tep_low = weather_list[0]['low']   # 低温
+notice = weather_list[0]['notice']  # 提示信息
+week = weather_list[0]['week']  # 星期几
+ymd = weather_list[0]['ymd']  # 年月日
+# 划分城市
+parent = city_list['parent']
+citys = city_list['city']
+ 
+data = {"parent":{"value":parent, "color": get_random_color()},
+        "city":{"value":citys, "color": get_random_color()},
+        "type":{"value":type, "color": get_random_color()},
+        "tep_high":{"value":tep_high, "color": get_random_color()},
+        "tep_low":{"value":tep_low, "color": get_random_color()},
+        "notice":{"value":notice, "color": get_random_color()},
+        "week":{"value":week, "color": get_random_color()},
+        "ymd":{"value":ymd, "color": get_random_color()},
+        "love_days":{"value":get_count(), "color": get_random_color()},
+        "birthday_left":{"value":get_birthday(), "color": get_random_color()},
+        "words":{"value":get_words(), "color": get_random_color()}}
+ 
+# 群发消息
+for i in range(len(user_id)):
+  res = wm.send_template(user_id[i], template_id, data)
+  print(res)
+ 
+ 
+ 
