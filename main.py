@@ -8,6 +8,7 @@ import random
 
 today = datetime.now()
 start_date = os.environ['START_DATE']
+city = os.environ['CITY']
 birthday = os.environ['BIRTHDAY']
 
 app_id = os.environ["APP_ID"]
@@ -20,7 +21,7 @@ def get_weather():
   url = "http://t.weather.sojson.com/api/weather/city/101190704"
   res = requests.get(url).json()
   weather = res['data']
-  return weather['forecast'][0]['high'],weather['forecast'][0]['low'],weather['forecast'][0]['type'],weather['forecast'][0]['week'],weather['forecast'][0]['ymd']
+  return weather['forecast'][0]['high'],weather['forecast'][0]['low'],weather['forecast'][0]['type'],weather['forecast'][0]['week'],weather['forecast'][0]['ymd'],weather['forecast'][0]['notice']
 
 def get_count():
   delta = today - datetime.strptime(start_date, "%Y-%m-%d")
@@ -33,10 +34,10 @@ def get_birthday():
   return (next - today).days
 
 def get_words():
-  words = requests.get("https://api.shadiao.pro/chp")
-  if words.status_code != 200:
-    return get_words()
-  return words.json()['data']['text']
+    url = "https://api.shadiao.pro/chp"
+    res = requests.get(url).json()
+    words = res['data']
+    return words['text']
 
 def get_random_color():
   return "#%06x" % random.randint(0, 0xFFFFFF)
@@ -46,13 +47,14 @@ client = WeChatClient(app_id, app_secret)
 
 wm = WeChatMessage(client)
 # wea, temperature, low, high, airQuality = get_weather()
-high,low,type,week,ymd = get_weather()
+high,low,type,week,ymd,notice = get_weather()
 data = {
     "week": {"value": week, "color": get_random_color()},
     "low":{"value":low, "color":get_random_color()},
     "high":{"value":high, "color":get_random_color()},
     "type":{"value":type, "color":get_random_color()},
     "ymd": {"value": ymd, "color": get_random_color()},
+    "notice": {"value": notice, "color": get_random_color()},
     "love_days":{"value":get_count(), "color":get_random_color()},
     "birthday_left":{"value":get_birthday(), "color":get_random_color()},
     "words":{"value":get_words(), "color":get_random_color()}
