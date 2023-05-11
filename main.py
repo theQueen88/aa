@@ -3,24 +3,23 @@ import math
 from wechatpy import WeChatClient
 from wechatpy.client.api import WeChatMessage, WeChatTemplate
 import requests
-from requests.packages import urllib3
 import os
 import random
  
 today = datetime.now()
  
-start_date = "2023-03-27"  #你们恋爱开始的时间开始时间
-city = "101190704"         #城市id 具体的可以在https://www.sojson.com/blog/305.html查询
-gyjbirthday = "08-20"  # 两个人的生日生日
-zcbirthday = "10-22"  #生日
-app_id = "wx85f226df68a65292" #微信测试的app_id
-app_secret = "6d07756f1a35cc0c0b0a18417a58b0aa" #微信测试的app_secret
-user_id = "oPQbt6nQb3L2qwE-_Q1bSvEcMyXs"        #生成的user_id 让你的女朋友扫码 显示出来的id
-template_id = "ucgRwwi2Jj7X4F7R7yZu8l_95bBhJBWN4jBa8-YMA9U" #模板id
+start_date = os.environ['START_DATE'] #你们恋爱开始的时间开始时间
+city = os.environ['CITY']
+gyjbirthday = os.environ['GYJBIRTHDAY']  # 两个人的生日生日
+zcbirthday = os.environ['ZCBIRTHDAY']  #生日
+app_id = os.environ["APP_ID"] #微信测试的app_id
+app_secret = os.environ["APP_SECRET"] #微信测试的app_secret
+user_id = os.environ["USER_ID"]        #生成的user_id 让你的女朋友扫码 显示出来的id
+template_id = os.environ["TEMPLATE_ID"] #模板id
  
 # 返回  当天最高最低气温 当天天气情况 
 def get_weather():
-  url = "http://t.weather.sojson.com/api/weather/city/" + city
+  url = "http://t.weather.sojson.com/api/weather/city/101190704"
   res = requests.get(url).json()
   weather = res['data']
   return weather['forecast'][0]['high'],weather['forecast'][0]['low'],weather['forecast'][0]['type'],weather['forecast'][0]['week'],weather['forecast'][0]['ymd']
