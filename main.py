@@ -9,7 +9,7 @@ start_date = "2023-03-27"  # 恋爱开始时间
 city = "101110809"         # 城市天气查询的id ,根据自己城市查询城市ID
 birthday = "08-20"         # 出生日期
 app_id = "wx85f226df68a65292" # app_id
-app_s = "6d07756f1a35cc0c0b0a18417a58b0aa"   # appsecret
+app_secret = "6d07756f1a35cc0c0b0a18417a58b0aa"   # appsecret
 user_id = ["oPQbt6nQb3L2qwE-_Q1bSvEcMyXs"]        # user_id 关注的用户微信ID
 template_id = "WQcScxPRg6CHbSBg79-vrburdLypTQiYrq-t8rY3HJo"  # 生成的模板id， 新建的ID
  
