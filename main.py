@@ -6,8 +6,6 @@ import requests
 from requests.packages import urllib3
 import os
 import random
-import schedule
-import time
  
 today = datetime.now()
  
@@ -101,12 +99,5 @@ def run():
   }
   # 发送消息
   res = wm.send_template(user_id, template_id, data)
-  if res['errmsg'] == 'ok':
-    print(ymd + '消息发送成功')
-# run()
-# 定时器 每天什么时候发送消息
-schedule.every().day.at("05:20").do(run)
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+  print(res)
  
