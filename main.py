@@ -10,8 +10,9 @@ today = datetime.now()
  
 start_date = os.environ['START_DATE'] #你们恋爱开始的时间开始时间
 city = os.environ['CITY']
-gyjbirthday = os.environ['GYJ_BIRTHDAY']  # 两个人的生日生日
-zcbirthday = os.environ['ZC_BIRTHDAY']  #生日
+# gyjbirthday = os.environ['GYJ_BIRTHDAY']  # 两个人的生日生日
+# zcbirthday = os.environ['ZC_BIRTHDAY']  #生日
+birthday = os.environ['BIRTHDAY']
 app_id = os.environ["APP_ID"] #微信测试的app_id
 app_secret = os.environ["APP_SECRET"] #微信测试的app_secret
 user_id = os.environ["USER_ID"]        #生成的user_id 让你的女朋友扫码 显示出来的id
@@ -50,15 +51,20 @@ def get_count():
   return delta.days
  
 # 距离下个生日还有多久
-def get_birthday():
-  gyjnext = datetime.strptime(str(date.today().year) + "-" + gyjbirthday, "%Y-%m-%d")
-  if gyjnext < datetime.now():
-    gyjnext = gyjnext.replace(year=gyjnext.year + 1)
+# def get_birthday():
+#   gyjnext = datetime.strptime(str(date.today().year) + "-" + gyjbirthday, "%Y-%m-%d")
+#   if gyjnext < datetime.now():
+#     gyjnext = gyjnext.replace(year=gyjnext.year + 1)
  
-  zcnext = datetime.strptime(str(date.today().year) + "-" + zcbirthday, "%Y-%m-%d")
-  if zcnext < datetime.now():
-    zcnext = zcnext.replace(year=zcnext.year + 1)
-  return (gyjnext - today).days,(zcnext - today).days
+#   zcnext = datetime.strptime(str(date.today().year) + "-" + zcbirthday, "%Y-%m-%d")
+#   if zcnext < datetime.now():
+#     zcnext = zcnext.replace(year=zcnext.year + 1)
+#   return (gyjnext - today).days,(zcnext - today).days
+def get_birthday():
+  next = datetime.strptime(str(date.today().year) + "-" + birthday, "%Y-%m-%d")
+  if next < datetime.now():
+    next = next.replace(year=next.year + 1)
+  return (next - today).days
  
 # 生成有趣的文案
 def get_words():
@@ -75,7 +81,7 @@ def run():
   client = WeChatClient(app_id, app_secret)
   wm = WeChatMessage(client)
   high,low,type,week,ymd = get_weather()
-  gyj,zc = get_birthday()
+#   gyj,zc = get_birthday()
   color,summary = get_lucky()
   date,title = get_history()
   info = get_info()
@@ -92,8 +98,9 @@ def run():
     "high": {"value": high, "color": get_random_color()},
     "low": {"value": low, "color": get_random_color()},
     "love_days":{"value":get_count(), "color":get_random_color()},
-    "birthdaygyj":{"value":gyj, "color":get_random_color()},
-    "birthdayzc": {"value": zc, "color": get_random_color()},
+    "birthday_left":{"value":get_birthday(), "color":get_random_color()},
+    # "birthdaygyj":{"value":gyj, "color":get_random_color()},
+    # "birthdayzc": {"value": zc, "color": get_random_color()},
     "words":{"value":get_words(), "color":get_random_color()}
   }
   # 发送消息
