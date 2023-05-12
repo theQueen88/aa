@@ -19,7 +19,7 @@ template_id = os.environ["TEMPLATE_ID"]
 
 
 def get_weather():
-  url = "http://t.weather.sojson.com/api/weather/city/101190704"
+  url = "http://t.weather.sojson.com/api/weather/city/101180301"
   res = requests.get(url).json()
   weather = res['data']
   return weather['forecast'][0]['high'],weather['forecast'][0]['low'],weather['forecast'][0]['type'],weather['forecast'][0]['week'],weather['forecast'][0]['ymd'],weather['forecast'][0]['notice']
